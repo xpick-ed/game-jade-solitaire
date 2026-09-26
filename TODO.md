@@ -18,8 +18,19 @@ Settings → 風格 picks one; it's saved in prefs as `style` and set as `data-s
   win cascade in candy and mono.
 - Published as an Artifact (same URL as v1/v2): https://claude.ai/artifact/1AgUn3kLQ76rbdYHPRZLWK
 
-**Next (ideas):**
-- Get the user's reaction to 糖果 / 極簡; tweak from there.
+**Then (2026-09-26, not built yet):** user said every look so far "不精緻", then rejected a board of
+refined playing-card directions (青瓷 / 夜宴 / 日光) too: wants a brand-new, fun + good-looking style,
+not tied to Windows solitaire. New proposal page with four directions, each a rendered mid-game table:
+https://claude.ai/artifact/QkbRrtFhRXihB4MFnPeHMX (source kept only in the artifact).
+- 玉牌: ivory-and-jade tiles with thickness, carved numbers, 王/后/將 courts, jade back with a coin.
+- 夜市: night-market neon; dark lightbox cards, pink (red suits) vs cyan (black suits) tubes, unlit backs.
+- 紙雕: layered paper-cut mountains; card-stock cards with pasted paper suits, 山/月/松 court windows.
+- 漫畫: comic pop; halftone yellow, ink outlines, hard shadows, starburst courts, 「啪！」 pops.
+- All share a new layout: foundations + progress bar on top, stock bottom-right, plus a 連擊 (combo) bonus.
+
+**Next:**
+- Wait for the user to pick a direction (or mix), then rebuild the game in it, probably replacing the
+  current 翡翠/糖果/極簡 looks.
 - Bug found by reading (not fixed): starting a new game while auto-complete runs lets the old
   `autoComplete` timer keep moving cards in the new deal. `newGame` should cancel it; the menu's
   重玩/今日挑戰 buttons also skip the `busy` check.
