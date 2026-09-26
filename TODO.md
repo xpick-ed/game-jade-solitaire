@@ -2,41 +2,31 @@
 
 ## Current
 
-**Doing (done, committed):** v3 — three switchable looks (user asked for "cuter or more modern").
-Settings → 風格 picks one; it's saved in prefs as `style` and set as `data-style` on `<html>`.
-- 翡翠 (default): the v2 look, unchanged.
-- 糖果 (cute): pastel polka-dot table, chunky cream cards with a raised bottom edge, a face on
-  every suit, J/Q/K = bunny / cat with a bow / bear with a crown, heart-with-face card back,
-  bouncier easing, confetti dots on foundation drops. Fonts: Fredoka + Chiron GoRound TC.
-- 極簡 (modern): flat table, sharp white cards with huge thin Outfit-200 numerals, J/Q/K as a
-  solid colour block, solid backs with one ring, electric-blue highlight. Font: Noto Sans TC.
-- Each look renames and recolours the same 3 table and 3 back options (e.g. 極簡's 墨黑 table is dark).
-- Card faces are rebuilt when the look changes (`cardHTML` switches on `look`); the win
-  cascade has a canvas painter per look (`PAINT`). Candy art is `[fill, path]` lists (`FACES`,
-  `PETS`) so the same shapes draw as SVG and on canvas.
-- Checked in the browser: all three looks at desktop and 390px width, settings sheet, and the
-  win cascade in candy and mono.
-- Published as an Artifact (same URL as v1/v2): https://claude.ai/artifact/1AgUn3kLQ76rbdYHPRZLWK
+**Doing (done, committed):** v4 — rebuilt the whole game in the 漫畫 (comic) style the user picked
+from the direction board (https://claude.ai/artifact/QkbRrtFhRXihB4MFnPeHMX). The old
+翡翠 / 糖果 / 極簡 looks and the 風格 picker are gone.
+- Look: halftone yellow page with sun rays, white cards with thick ink outlines and hard offset
+  shadows, Bangers numerals, inked suits with a white glint, J/Q/K in starbursts captioned
+  騎士 / 皇后 / 國王, aces on a cyan burst, dotted card backs with a yellow star. Speech-bubble toasts,
+  chunky buttons, comic sheets. Fonts: Bangers + Noto Sans TC.
+- Settings: 背景 (檸檬黃 / 汽水藍 / 草莓粉) and 牌背 (桃紅 / 天藍 / 番茄紅); old saved prefs fall back to defaults.
+- New layout: foundations + a 已收 N/52 progress panel along the top, tableau in the middle,
+  buttons bottom-left, waste + stock bottom-right (waste fans leftward). The deal flies out of the stock.
+- 連擊 (combo): a foundation move or turning over a hidden card within 6 s of the last one grows the
+  combo; its points are multiplied by the combo (max ×5). Pink chip in the progress panel with a
+  draining strip, rising arpeggio sound. Undo and new game end the combo; 自動收牌 doesn't count.
+- Pops: 「啪！/咚！/好耶！」 on foundation drops, 「連擊×N！」 in pink, 「讚啦！/收齊！」 when a suit
+  completes, a huge 「贏啦！」 on a win; the canvas win cascade paints comic cards.
+- Fixed the old bug: `newGame` now cancels a running auto-complete and the previous deal's timer.
+- Checked in the browser: desktop 1100×760 and phone 390×780, a 4-move combo (score 15+30+45+60),
+  undo, the pop sizes, settings, and the win cascade + dialog. No console errors.
+- Published as an Artifact (same URL as before): https://claude.ai/artifact/1AgUn3kLQ76rbdYHPRZLWK
 
-**Then (2026-09-26, not built yet):** user said every look so far "不精緻", then rejected a board of
-refined playing-card directions (青瓷 / 夜宴 / 日光) too: wants a brand-new, fun + good-looking style,
-not tied to Windows solitaire. New proposal page with four directions, each a rendered mid-game table:
-https://claude.ai/artifact/QkbRrtFhRXihB4MFnPeHMX (source kept only in the artifact).
-- 玉牌: ivory-and-jade tiles with thickness, carved numbers, 王/后/將 courts, jade back with a coin.
-- 夜市: night-market neon; dark lightbox cards, pink (red suits) vs cyan (black suits) tubes, unlit backs.
-- 紙雕: layered paper-cut mountains; card-stock cards with pasted paper suits, 山/月/松 court windows.
-- 漫畫: comic pop; halftone yellow, ink outlines, hard shadows, starburst courts, 「啪！」 pops.
-- All share a new layout: foundations + progress bar on top, stock bottom-right, plus a 連擊 (combo) bonus.
-
-**Next:**
-- Wait for the user to pick a direction (or mix), then rebuild the game in it, probably replacing the
-  current 翡翠/糖果/極簡 looks.
-- Bug found by reading (not fixed): starting a new game while auto-complete runs lets the old
-  `autoComplete` timer keep moving cards in the new deal. `newGame` should cancel it; the menu's
-  重玩/今日挑戰 buttons also skip the `busy` check.
+**Next (ideas):**
+- Get the user's reaction after playing; tune combo timing (6 s) and multiplier cap (×5) by feel.
 - Only deal solvable games (needs a solver, ideally in a Web Worker).
 - Cycle through destinations when a tapped card has more than one legal spot.
-- Left-hand layout option (stock on the right).
+- Left-hand layout option (mirror: stock bottom-left, buttons bottom-right).
 - Other variants (Spider / FreeCell) reusing the card rendering.
 
 **Blockers:** none.
@@ -49,6 +39,8 @@ https://claude.ai/artifact/QkbRrtFhRXihB4MFnPeHMX (source kept only in the artif
   `grep -v -x -E '<!doctype html>|<html lang="zh-Hant">|<head>|</head>|<body>|</body>|</html>|<meta charset="utf-8">|<meta name="viewport".*>' index.html > /tmp/jade-solitaire.html`
   then publish that file with `url` = the Artifact link above.
 - The whole game lives in the one `<script>` block: state (`G`, `history`), layout (`measure`,
-  `fan`, `computePositions`, `render`), moves (`doMove`, `drawStock`, `smartTarget`),
-  hints (`findHints`), win (`win`, `cascade`). Themes are CSS `[data-felt]` / `[data-back]` blocks;
-  looks are `[data-style="candy"]` / `[data-style="mono"]` blocks that re-point the `:root` tokens.
+  `fan`, `computePositions`, `render`), moves (`doMove`, `drawStock`, `smartTarget`), combo
+  (`bumpCombo`, `endCombo`), pops (`boom`, `fxEl`), hints (`findHints`), win (`win`, `cascade`,
+  `cardImage`). Background / back colours are CSS `[data-felt]` / `[data-back]` blocks.
+- Design history: v1 classic felt, v2 jade glass, v3 翡翠/糖果/極簡, then two proposal boards; the
+  user rejected everything card-on-felt and chose 漫畫.
