@@ -8,59 +8,118 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Noto+Sans+TC:wght@500;700;900&display=swap">
 <style>
-/* 漫畫 look: halftone yellow page, thick ink outlines, hard offset shadows, Bangers numerals. */
+/* 漫畫 look: thick ink outlines, hard offset shadows, starbursts, Bangers numerals.
+   Every colour is a token; each 背景 (data-felt on <html>) re-points them. */
 :root {
   color-scheme: light;
-  --ink: #151515;
-  --red: #ff3d3d;
-  --yellow: #ffd43b;
-  --cyan: #26b6ff;
-  --pink: #ff4fa8;
-  --cream: #fff6cf;
-  --bg: #ffd43b; --dot: rgba(255, 128, 40, .5);
-  --back: #ff4fa8;
+  --ink: #151515; --shadow: #151515;
+  --paper: #fff; --black: #151515; --red: #ff3d3d;
+  --panel: #fff; --panel-ink: #151515; --panel-hover: #fff6cf;
+  --text: #151515; --title: #fff; --title-shadow: #151515;
+  --burst-red: #ffd43b; --burst-black: #26b6ff; --burst-ace: #26b6ff;
+  --pop: #ffd43b; --pop-combo: #ff4fa8; --float: #ffd43b;
+  --theme-back: #ff4fa8; --back: var(--theme-back); --back-dot: rgba(255, 255, 255, .42); --star: #ffd43b;
+  --slot-line: rgba(21, 21, 21, .38); --slot-bg: rgba(255, 255, 255, .32); --slot-ink: rgba(21, 21, 21, .25); --slot-icon: rgba(21, 21, 21, .55);
+  --meter-bg: #fff; --bar-a: #ff3d3d; --bar-b: #ff7474; --combo: #ff4fa8; --chip: #ff3d3d;
+  --bg-solid: #ffd43b; --bg: #ffd43b;
+  --rays: repeating-conic-gradient(from 0deg at 50% 58%, rgba(255, 255, 255, .38) 0 5deg, transparent 5deg 13deg); --ray-mask: none;
+  --dot: rgba(255, 128, 40, .5); --dot-size: 12px; --dot-mask: radial-gradient(120% 90% at 50% 58%, transparent 38%, #000 95%);
+  /* sheets (settings, win) stay light in every theme */
+  --yellow: #ffd43b; --cyan: #26b6ff; --cream: #fff6cf;
   --ui: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
   --num: "Bangers", "Noto Sans TC", "Arial Black", sans-serif;
   --ease: cubic-bezier(.3, 1.3, .5, 1);
   --ease-flip: cubic-bezier(.3, .7, .2, 1);
 }
-/* Page backgrounds and card backs. Applied to <html> and reused by the menu swatches. */
-[data-felt="yellow"] { --bg: #ffd43b; --dot: rgba(255, 128, 40, .5); }
-[data-felt="sky"]    { --bg: #6fd0ff; --dot: rgba(10, 110, 200, .35); }
-[data-felt="pink"]   { --bg: #ffa3d2; --dot: rgba(225, 30, 135, .32); }
+/* ----- 背景 themes. Applied to <html> and reused by the menu swatches. ----- */
+/* 黑白: manga screentone and focus lines, red as the one spot colour (default) */
+[data-felt="manga"] {
+  --bg-solid: #e4e2dc; --bg: #e4e2dc;
+  --rays: repeating-conic-gradient(from 0deg at 50% 56%, rgba(0, 0, 0, .55) 0 .45deg, transparent .45deg 3.3deg);
+  --ray-mask: radial-gradient(75% 70% at 50% 56%, transparent 55%, #000 100%);
+  --dot: rgba(0, 0, 0, .28); --dot-size: 7px; --dot-mask: linear-gradient(#000, #000);
+  --text: #111; --title: #fff; --title-shadow: #111;
+  --ink: #111; --shadow: #111; --panel: #fff; --panel-ink: #111; --panel-hover: #f0f0f0;
+  --paper: #fff; --black: #111; --red: #d7263d;
+  --burst-red: #f2c6cc; --burst-black: #d6d6d6; --burst-ace: #d6d6d6; --pop: #fff; --pop-combo: #d7263d; --float: #fff;
+  --theme-back: #1a1a1a; --back-dot: rgba(255, 255, 255, .45); --star: #fff;
+  --slot-line: rgba(0, 0, 0, .45); --slot-bg: rgba(255, 255, 255, .55); --slot-ink: rgba(0, 0, 0, .25); --slot-icon: rgba(0, 0, 0, .55);
+  --meter-bg: #fff; --bar-a: #111; --bar-b: #555; --combo: #d7263d; --chip: #d7263d;
+}
+/* 深夜: the comic after dark, with a moon */
+[data-felt="night"] {
+  --bg-solid: #1b1945; --bg: radial-gradient(120% 90% at 50% 42%, #2c2970 0%, #1b1945 55%, #100f2b 100%);
+  --rays: repeating-conic-gradient(from 0deg at 50% 58%, rgba(255, 255, 255, .05) 0 5deg, transparent 5deg 13deg); --ray-mask: none;
+  --dot: rgba(125, 105, 255, .38); --dot-size: 12px; --dot-mask: radial-gradient(120% 90% at 50% 58%, transparent 40%, #000 95%);
+  --text: #f4f1ff; --title: #fff; --title-shadow: #ff4fa8;
+  --ink: #0b0a1d; --shadow: #07061a; --panel: #2d2a63; --panel-ink: #fff; --panel-hover: #3a3780;
+  --paper: #f7f3ea; --black: #14121c; --red: #ff3d57;
+  --burst-red: #ffd43b; --burst-black: #3fc3ff; --burst-ace: #3fc3ff; --pop: #ffd43b; --pop-combo: #ff4fa8; --float: #ffd43b;
+  --theme-back: #ff4fa8; --back-dot: rgba(255, 255, 255, .4); --star: #ffd43b;
+  --slot-line: rgba(255, 255, 255, .3); --slot-bg: rgba(255, 255, 255, .05); --slot-ink: rgba(255, 255, 255, .22); --slot-icon: rgba(255, 255, 255, .55);
+  --meter-bg: #1a1845; --bar-a: #ffd43b; --bar-b: #ffe78a; --combo: #ff4fa8; --chip: #ff4fa8;
+}
+/* 復古: 1960s newsprint, muted inks */
+[data-felt="retro"] {
+  --bg-solid: #3b6a64; --bg: radial-gradient(120% 90% at 50% 40%, #4b7c76 0%, #3b6a64 55%, #2c524d 100%);
+  --rays: repeating-conic-gradient(from 0deg at 50% 58%, rgba(255, 240, 205, .07) 0 5deg, transparent 5deg 13deg); --ray-mask: none;
+  --dot: rgba(20, 48, 45, .5); --dot-size: 16px; --dot-mask: radial-gradient(120% 90% at 50% 58%, transparent 30%, #000 90%);
+  --text: #f2e6c9; --title: #f2e6c9; --title-shadow: #c4432f;
+  --ink: #2a211d; --shadow: #2a211d; --panel: #f2e6c9; --panel-ink: #2a211d; --panel-hover: #fbf4e2;
+  --paper: #f3e8cc; --black: #2a211d; --red: #c4432f;
+  --burst-red: #e2b04a; --burst-black: #6fb0a8; --burst-ace: #6fb0a8; --pop: #e2b04a; --pop-combo: #c4432f; --float: #e2b04a;
+  --theme-back: #c4432f; --back-dot: rgba(243, 232, 204, .5); --star: #e2b04a;
+  --slot-line: rgba(242, 230, 201, .45); --slot-bg: rgba(242, 230, 201, .08); --slot-ink: rgba(242, 230, 201, .3); --slot-icon: rgba(242, 230, 201, .6);
+  --meter-bg: #fbf4e2; --bar-a: #c4432f; --bar-b: #d9745f; --combo: #c4432f; --chip: #c4432f;
+}
+/* the original bright pages */
+[data-felt="yellow"] { --bg-solid: #ffd43b; --bg: #ffd43b; --dot: rgba(255, 128, 40, .5); }
+[data-felt="sky"]    { --bg-solid: #6fd0ff; --bg: #6fd0ff; --dot: rgba(10, 110, 200, .35); }
+[data-felt="pink"]   { --bg-solid: #ffa3d2; --bg: #ffa3d2; --dot: rgba(225, 30, 135, .32); }
+/* 牌背: "auto" keeps the theme's own back */
 [data-back="pink"] { --back: #ff4fa8; }
 [data-back="cyan"] { --back: #26b6ff; }
 [data-back="red"]  { --back: #ff3d3d; }
 
 [hidden] { display: none !important; }
-html { height: 100%; box-sizing: border-box; background: var(--bg); }
+html { height: 100%; box-sizing: border-box; background: var(--bg-solid); }
 *, *::before, *::after { box-sizing: inherit; }
 body {
   height: 100%; margin: 0; overflow: hidden;
-  color: var(--ink); font-family: var(--ui); font-size: 15px; background: var(--bg);
+  color: var(--text); font-family: var(--ui); font-size: 15px; background: var(--bg);
   -webkit-user-select: none; user-select: none;
   -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none;
 }
-/* sun rays from behind the table, halftone dots toward the edges */
-body::before { content: ""; position: fixed; inset: 0; pointer-events: none; background: repeating-conic-gradient(from 0deg at 50% 58%, rgba(255, 255, 255, .38) 0 5deg, transparent 5deg 13deg); }
+/* rays (or manga focus lines) from behind the table, and halftone dots */
+body::before { content: ""; position: fixed; inset: 0; pointer-events: none; background: var(--rays); -webkit-mask: var(--ray-mask); mask: var(--ray-mask); }
 body::after {
   content: ""; position: fixed; inset: 0; pointer-events: none;
-  background: radial-gradient(circle, var(--dot) 30%, transparent 32%) 0 0 / 12px 12px;
-  -webkit-mask: radial-gradient(120% 90% at 50% 58%, transparent 38%, #000 95%); mask: radial-gradient(120% 90% at 50% 58%, transparent 38%, #000 95%);
+  background: radial-gradient(circle, var(--dot) 30%, transparent 32%) 0 0 / var(--dot-size) var(--dot-size);
+  -webkit-mask: var(--dot-mask); mask: var(--dot-mask);
 }
+/* 深夜's moon and stars */
+.sky { display: none; position: fixed; inset: 0; pointer-events: none; }
+[data-felt="night"] .sky { display: block; }
+.sky svg { position: absolute; }
+.moon { left: 46%; top: 8px; width: 44px; height: 44px; }
+.moon path { fill: #ffd43b; stroke: var(--ink); stroke-width: 5; stroke-linejoin: round; }
+.spark { width: 16px; height: 16px; }
+.spark path { fill: #ffe78a; }
 .app { position: relative; z-index: 1; height: 100%; max-width: 1180px; margin-inline: auto; padding-inline: 16px; display: flex; flex-direction: column; }
 
 /* ---------- header ---------- */
 .bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 12px 0; }
 .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .logo { flex: none; width: 42px; height: 42px; rotate: -8deg; }
+.logo .bf { fill: var(--red); stroke-width: 4; }
+.logo text { fill: #fff; stroke: var(--ink); stroke-width: 7; paint-order: stroke; }
 h1 {
-  margin: 0; font: 900 25px/1.1 var(--ui); color: #fff; letter-spacing: .06em; white-space: nowrap;
-  -webkit-text-stroke: 4px var(--ink); paint-order: stroke fill; text-shadow: 3px 3px 0 var(--ink);
+  margin: 0; font: 900 25px/1.1 var(--ui); color: var(--title); letter-spacing: .06em; white-space: nowrap;
+  -webkit-text-stroke: 4px var(--ink); paint-order: stroke fill; text-shadow: 3px 3px 0 var(--title-shadow);
 }
 .deal { margin: 5px 0 0; font: 700 12px/1.2 var(--ui); opacity: .78; white-space: nowrap; }
 .stats { display: flex; gap: 8px; margin: 0; }
-.stats div { display: flex; align-items: baseline; gap: 6px; padding: 7px 11px 6px; background: #fff; border: 2.5px solid var(--ink); border-radius: 10px; box-shadow: 3px 3px 0 var(--ink); }
+.stats div { display: flex; align-items: baseline; gap: 6px; padding: 7px 11px 6px; background: var(--panel); color: var(--panel-ink); border: 2.5px solid var(--ink); border-radius: 10px; box-shadow: 3px 3px 0 var(--shadow); }
 .stats dt { font: 700 12px/1 var(--ui); }
 .stats dd { margin: 0; font: 400 21px/1 var(--num); letter-spacing: .04em; }
 
@@ -73,11 +132,11 @@ h1 {
 }
 .slot {
   position: absolute; left: 0; top: 0; width: var(--cw); height: var(--ch); border-radius: var(--r);
-  border: var(--ol) dashed rgba(21, 21, 21, .38); background: rgba(255, 255, 255, .32);
-  display: grid; place-items: center; color: rgba(21, 21, 21, .25); font: 400 calc(var(--cw) * .36)/1 var(--num);
+  border: var(--ol) dashed var(--slot-line); background: var(--slot-bg);
+  display: grid; place-items: center; color: var(--slot-ink); font: 400 calc(var(--cw) * .36)/1 var(--num);
 }
 .slot.stock { cursor: pointer; }
-.slot.stock svg { width: 44%; fill: none; stroke: rgba(21, 21, 21, .55); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; transition: opacity .2s; }
+.slot.stock svg { width: 44%; fill: none; stroke: var(--slot-icon); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; transition: opacity .2s; }
 .slot.stock.empty svg { opacity: .2; }
 
 .card {
@@ -94,7 +153,7 @@ h1 {
 .card:not(.up) .flip { transform: rotateY(180deg); }
 .card.dragging { transition: none; cursor: grabbing; }
 .card.dragging .flip { scale: 1.07; rotate: calc(var(--tilt, 0deg) * 1.3); transition: transform .38s var(--ease-flip), scale .16s ease; }
-.card.dragging .front { box-shadow: calc(var(--hard) * 2) calc(var(--hard) * 2.4) 0 var(--ink); }
+.card.dragging .front { box-shadow: calc(var(--hard) * 2) calc(var(--hard) * 2.4) 0 var(--shadow); }
 .instant .card, .instant .card .flip { transition: none !important; }
 
 .face {
@@ -102,9 +161,12 @@ h1 {
   backface-visibility: hidden; -webkit-backface-visibility: hidden;
   border: var(--ol) solid var(--ink);
 }
-.front { color: var(--ink); background: #fff; box-shadow: var(--hard) var(--hard) 0 var(--ink); }
+.front { color: var(--black); background: var(--paper); box-shadow: var(--hard) var(--hard) 0 var(--shadow); }
 .front.red { color: var(--red); }
 .front svg { display: block; }
+.inked { fill: currentColor; stroke: var(--ink); stroke-width: 7; paint-order: stroke; stroke-linejoin: round; }
+.is .inked { stroke-width: 9; }
+.bf { stroke: var(--ink); stroke-width: 3.5; stroke-linejoin: round; }
 .idx { position: absolute; top: calc(var(--cw) * .04); left: calc(var(--cw) * .08); display: flex; align-items: center; gap: calc(var(--cw) * .03); }
 .rk { font: 400 calc(var(--cw) * .36)/1 var(--num); letter-spacing: .02em; -webkit-text-stroke: max(1px, calc(var(--cw) * .014)) var(--ink); paint-order: stroke fill; }
 .is { width: calc(var(--cw) * .17); height: calc(var(--cw) * .17); }
@@ -112,23 +174,29 @@ h1 {
 .big > svg { width: 100%; height: 100%; }
 .big .on { position: absolute; inset: 22%; }
 .big .on svg { width: 100%; height: 100%; }
+.ace .bf { fill: var(--burst-ace); }
 .pow { top: 57%; width: calc(var(--cw) * .8); height: calc(var(--cw) * .8); }
+.front.red .pow .bf { fill: var(--burst-red); }
+.front.black .pow .bf { fill: var(--burst-black); }
 .pow b { position: absolute; font: 400 calc(var(--cw) * .42)/1 var(--num); color: #fff; -webkit-text-stroke: calc(var(--cw) * .025) var(--ink); paint-order: stroke fill; text-shadow: calc(var(--cw) * .03) calc(var(--cw) * .03) 0 var(--ink); }
-.cap { position: absolute; left: 50%; bottom: calc(var(--cw) * .07); translate: -50% 0; padding: 0 calc(var(--cw) * .06); background: var(--ink); color: #fff; font: 900 max(8px, calc(var(--cw) * .11))/1.5 var(--ui); letter-spacing: .12em; white-space: nowrap; }
+.cap { position: absolute; left: 50%; bottom: calc(var(--cw) * .07); translate: -50% 0; padding: 0 calc(var(--cw) * .06); background: var(--ink); color: var(--paper); font: 900 max(8px, calc(var(--cw) * .11))/1.5 var(--ui); letter-spacing: .12em; white-space: nowrap; }
 .compact .idx { top: calc(var(--cw) * .02); left: calc(var(--cw) * .07); }
 .compact .rk { font-size: calc(var(--cw) * .44); }
 .compact .is { width: calc(var(--cw) * .2); height: calc(var(--cw) * .2); }
 .compact .pow { top: 60%; }
 .compact .cap { display: none; }
+/* 復古: printed card stock, and the colour plate a hair off the black plate */
+[data-felt="retro"] .front { background: radial-gradient(circle, rgba(140, 100, 40, .1) 30%, transparent 32%) 0 0 / 5px 5px, var(--paper); }
+[data-felt="retro"] .big svg, [data-felt="retro"] .is { filter: drop-shadow(1.5px 1px 0 rgba(196, 67, 47, .35)); }
 
 /* The back face is turned over, so its shadow offset is mirrored to land on the same side. */
 .back {
   transform: rotateY(180deg);
-  background: radial-gradient(circle, rgba(255, 255, 255, .42) 28%, transparent 30%) 0 0 / calc(var(--cw) * .12) calc(var(--cw) * .12), var(--back);
-  box-shadow: calc(var(--hard) * -1) var(--hard) 0 var(--ink);
+  background: radial-gradient(circle, var(--back-dot) 28%, transparent 30%) 0 0 / calc(var(--cw) * .12) calc(var(--cw) * .12), var(--back);
+  box-shadow: calc(var(--hard) * -1) var(--hard) 0 var(--shadow);
 }
 .star { position: absolute; left: 50%; top: 50%; width: calc(var(--cw) * .54); height: calc(var(--cw) * .54); translate: -50% -50%; }
-.star path { fill: var(--yellow); }
+.star path { fill: var(--star); stroke: var(--ink); stroke-width: 5; stroke-linejoin: round; }
 
 .card.target, .slot.target { box-shadow: var(--ring); }
 .card.hint, .slot.hint { box-shadow: var(--ring); animation: wiggle .2s ease-in-out 8 alternate; }
@@ -144,6 +212,8 @@ h1 {
   animation: boom .85s var(--ease) forwards;
 }
 .boom svg { grid-area: 1 / 1; width: var(--w, 2.8em); height: 2.6em; }
+.boom .bf { fill: var(--pop); stroke-width: 3; }
+.boom.hot .bf, .boom.huge .bf { fill: var(--pop-combo); }
 .boom span { grid-area: 1 / 1; }
 .boom.big { font-size: max(24px, calc(var(--cw) * .42)); }
 .boom.huge { font-size: max(40px, calc(var(--cw) * .8)); animation-duration: 1.6s; }
@@ -156,7 +226,7 @@ h1 {
 }
 .float {
   position: absolute; z-index: 4003; pointer-events: none; translate: -50% 0;
-  font: 400 max(17px, calc(var(--cw) * .26))/1 var(--num); letter-spacing: .04em; color: var(--yellow);
+  font: 400 max(17px, calc(var(--cw) * .26))/1 var(--num); letter-spacing: .04em; color: var(--float);
   -webkit-text-stroke: max(3px, calc(var(--cw) * .035)) var(--ink); paint-order: stroke fill;
   animation: floatUp .95s var(--ease-flip) forwards;
 }
@@ -171,21 +241,21 @@ h1 {
 .goal {
   position: absolute; left: 0; top: 0; z-index: 5;
   display: grid; align-content: center; gap: calc(var(--cw) * .07); padding: calc(var(--cw) * .08) calc(var(--cw) * .14);
-  background: #fff; border: var(--ol) solid var(--ink); border-radius: calc(var(--r) * 1.4); box-shadow: var(--hard) var(--hard) 0 var(--ink);
+  background: var(--panel); color: var(--panel-ink); border: var(--ol) solid var(--ink); border-radius: calc(var(--r) * 1.4); box-shadow: var(--hard) var(--hard) 0 var(--shadow);
 }
 .goal .line { display: flex; align-items: baseline; gap: 5px; font: 700 max(11px, calc(var(--cw) * .13))/1 var(--ui); }
 .goal .line b { margin-left: auto; font: 400 max(19px, calc(var(--cw) * .32))/1 var(--num); letter-spacing: .04em; }
 .goal .line small { font: 400 max(12px, calc(var(--cw) * .17))/1 var(--num); letter-spacing: .04em; opacity: .5; }
-.meter { height: max(10px, calc(var(--cw) * .13)); border: var(--ol) solid var(--ink); border-radius: 99px; overflow: hidden; background: #fff; }
-.meter i { display: block; width: 0; height: 100%; background: repeating-linear-gradient(135deg, var(--red) 0 6px, #ff7474 6px 12px); box-shadow: var(--ol) 0 0 var(--ink); transition: width .5s var(--ease); }
+.meter { height: max(10px, calc(var(--cw) * .13)); border: var(--ol) solid var(--ink); border-radius: 99px; overflow: hidden; background: var(--meter-bg); }
+.meter i { display: block; width: 0; height: 100%; background: repeating-linear-gradient(135deg, var(--bar-a) 0 6px, var(--bar-b) 6px 12px); box-shadow: var(--ol) 0 0 var(--ink); transition: width .5s var(--ease); }
 .combo {
   position: relative; justify-self: end; overflow: hidden; padding: 2px 10px 4px; rotate: -5deg;
-  background: var(--pink); color: #fff; border: var(--ol) solid var(--ink); box-shadow: 2px 2px 0 var(--ink);
+  background: var(--combo); color: #fff; border: var(--ol) solid var(--ink); box-shadow: 2px 2px 0 var(--shadow);
   font: 900 max(12px, calc(var(--cw) * .15))/1.2 var(--ui); letter-spacing: .08em; -webkit-text-stroke: 1px var(--ink); paint-order: stroke fill;
 }
 .combo b { font: 400 1.3em/1 var(--num); letter-spacing: .04em; }
 /* the strip along the bottom runs out when the combo is about to end */
-.combo::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--yellow); transform-origin: left; }
+.combo::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--star); transform-origin: left; }
 .combo.pop { animation: comboPop .35s var(--ease); }
 .combo.pop::after { animation: drain var(--combo-ms, 6s) linear forwards; }
 @keyframes drain { to { transform: scaleX(0); } }
@@ -196,20 +266,20 @@ h1 {
 .tools button {
   flex: 1; min-width: 0; appearance: none; cursor: pointer;
   display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 9px 2px 8px;
-  background: #fff; color: var(--ink); border: 2.5px solid var(--ink); border-radius: 12px; box-shadow: 3px 3px 0 var(--ink);
+  background: var(--panel); color: var(--panel-ink); border: 2.5px solid var(--ink); border-radius: 12px; box-shadow: 3px 3px 0 var(--shadow);
   font: 700 12px/1 var(--ui); letter-spacing: .04em; white-space: nowrap;
   transition: translate .08s, box-shadow .08s, background .15s, opacity .15s;
 }
-.tools button:hover { background: var(--cream); }
-.tools button:active { translate: 2px 2px; box-shadow: 1px 1px 0 var(--ink); }
-.tools button:disabled { opacity: .45; cursor: default; background: #fff; translate: none; box-shadow: 3px 3px 0 var(--ink); }
+.tools button:hover { background: var(--panel-hover); }
+.tools button:active { translate: 2px 2px; box-shadow: 1px 1px 0 var(--shadow); }
+.tools button:disabled { opacity: .45; cursor: default; background: var(--panel); translate: none; box-shadow: 3px 3px 0 var(--shadow); }
 .tools button.armed { background: var(--red); color: #fff; }
 .tools svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 #btnSound[aria-pressed="true"] .off, #btnSound[aria-pressed="false"] .on { display: none; }
 .chip {
   position: absolute; left: 50%; top: 0; z-index: 2900; translate: -50% 0;
   appearance: none; cursor: pointer; padding: 12px 24px 13px; border-radius: 999px;
-  background: var(--red); color: #fff; border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink);
+  background: var(--chip); color: #fff; border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--shadow);
   font: 900 17px/1 var(--ui); letter-spacing: .12em; -webkit-text-stroke: 1px var(--ink); paint-order: stroke fill;
   animation: bob .5s ease-in-out infinite alternate;
 }
@@ -221,19 +291,19 @@ button:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
   position: fixed; left: 50%; top: calc(12px + env(safe-area-inset-top, 0px)); z-index: 60;
   translate: -50% -12px; opacity: 0; pointer-events: none;
   max-width: calc(100% - 32px); padding: 10px 18px;
-  background: #fff; color: var(--ink); border: 3px solid var(--ink); border-radius: 18px; box-shadow: 4px 4px 0 var(--ink);
+  background: #fff; color: #151515; border: 3px solid var(--ink); border-radius: 18px; box-shadow: 4px 4px 0 var(--shadow);
   font: 700 15px/1.4 var(--ui); letter-spacing: .03em; text-align: center;
   transition: opacity .2s, translate .25s var(--ease);
 }
 .toast::after { content: ""; position: absolute; left: calc(50% - 8px); bottom: -10px; width: 16px; height: 16px; background: #fff; border-right: 3px solid var(--ink); border-bottom: 3px solid var(--ink); rotate: 45deg; }
 .toast.show { opacity: 1; translate: -50% 0; }
 
-/* ---------- sheets ---------- */
+/* ---------- sheets (always light) ---------- */
 .veil { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px; background: rgba(21, 21, 21, .38); }
 .veil.win { background: rgba(21, 21, 21, .12); }
 .panel {
   width: 100%; max-width: 400px; max-height: 100%; overflow: auto;
-  background: #fff; color: var(--ink); border: 3px solid var(--ink); border-radius: 18px; box-shadow: 7px 7px 0 var(--ink);
+  background: #fff; color: #151515; border: 3px solid var(--ink); border-radius: 18px; box-shadow: 7px 7px 0 var(--shadow);
   padding: 18px 20px 22px; animation: rise .32s var(--ease);
   -webkit-user-select: text; user-select: text;
 }
@@ -241,47 +311,51 @@ button:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
 .panel h2 { margin: 0; font: 900 22px/1.25 var(--ui); letter-spacing: .06em; text-wrap: balance; }
 .panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
 .x {
-  width: 38px; height: 38px; border: 2.5px solid var(--ink); border-radius: 50%; cursor: pointer;
-  background: #fff; color: var(--ink); box-shadow: 2px 2px 0 var(--ink); font: 400 24px/1 var(--num);
+  width: 38px; height: 38px; border: 2.5px solid #151515; border-radius: 50%; cursor: pointer;
+  background: #fff; color: #151515; box-shadow: 2px 2px 0 #151515; font: 400 24px/1 var(--num);
 }
 .x:hover { background: var(--cream); }
 .field { display: grid; gap: 10px; padding-block: 14px; border-top: 2px dashed rgba(21, 21, 21, .22); }
 .lab { font: 900 13px/1 var(--ui); letter-spacing: .08em; }
-.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border-radius: 12px; border: 2.5px solid var(--ink); background: #f3f3f3; }
-.seg button { border: 0; background: transparent; cursor: pointer; color: var(--ink); opacity: .6; font: 700 15px/1 var(--ui); padding: 10px; border-radius: 8px; }
-.seg button[aria-pressed="true"] { opacity: 1; background: var(--yellow); box-shadow: inset 0 0 0 2px var(--ink); }
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border-radius: 12px; border: 2.5px solid #151515; background: #f3f3f3; }
+.seg button { border: 0; background: transparent; cursor: pointer; color: #151515; opacity: .6; font: 700 15px/1 var(--ui); padding: 10px; border-radius: 8px; }
+.seg button[aria-pressed="true"] { opacity: 1; background: var(--yellow); box-shadow: inset 0 0 0 2px #151515; }
 .note { margin: 0; font: 700 13px/1.4 var(--ui); color: #d4231f; }
 .note:empty { display: none; }
 .swatches { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.swatches.four { grid-template-columns: repeat(4, 1fr); }
 .sw {
-  border: 0; background: transparent; color: var(--ink); cursor: pointer;
+  border: 0; background: transparent; color: #151515; cursor: pointer;
   display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 8px 4px; border-radius: 12px;
   font: 700 13px/1 var(--ui); letter-spacing: .06em;
 }
 .sw:hover { background: #f5f5f5; }
-.sw i { display: block; height: 48px; border: 2.5px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.sw i { display: block; height: 48px; border: 2.5px solid #151515; box-shadow: 3px 3px 0 #151515; }
 .sw-felt i { width: 48px; border-radius: 50%; background: radial-gradient(circle, var(--dot) 30%, transparent 32%) 0 0 / 8px 8px, var(--bg); }
-.sw-back i { width: 36px; border-radius: 6px; background: radial-gradient(circle, rgba(255, 255, 255, .45) 28%, transparent 30%) 0 0 / 7px 7px, var(--back); }
+.sw-back i { width: 36px; border-radius: 6px; background: radial-gradient(circle, var(--back-dot) 28%, transparent 30%) 0 0 / 7px 7px, var(--back); }
+.sw-back[data-back="auto"] i { background: radial-gradient(circle, var(--back-dot) 28%, transparent 30%) 0 0 / 7px 7px, var(--theme-back); }
 .sw[aria-pressed="true"] i { outline: 3px solid var(--cyan); outline-offset: 4px; }
 .actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .btn {
-  appearance: none; cursor: pointer; border: 2.5px solid var(--ink); background: #fff; color: var(--ink);
-  font: 700 15px/1 var(--ui); letter-spacing: .04em; padding: 12px 17px; border-radius: 12px; box-shadow: 3px 3px 0 var(--ink);
+  appearance: none; cursor: pointer; border: 2.5px solid #151515; background: #fff; color: #151515;
+  font: 700 15px/1 var(--ui); letter-spacing: .04em; padding: 12px 17px; border-radius: 12px; box-shadow: 3px 3px 0 #151515;
   transition: translate .08s, box-shadow .08s, background .15s;
 }
 .btn:hover { background: var(--cream); }
-.btn:active { translate: 2px 2px; box-shadow: 1px 1px 0 var(--ink); }
-.btn.primary { background: var(--red); color: #fff; font-weight: 900; -webkit-text-stroke: 1px var(--ink); paint-order: stroke fill; }
-.btn.primary:hover { background: #ff5959; }
+.btn:active { translate: 2px 2px; box-shadow: 1px 1px 0 #151515; }
+.btn.primary { background: var(--red); color: #fff; font-weight: 900; -webkit-text-stroke: 1px #151515; paint-order: stroke fill; }
+.btn.primary:hover { background: var(--red); filter: brightness(1.08); }
 .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0; }
-.tiles div { display: flex; flex-direction: column; gap: 6px; padding: 11px 12px 10px; border-radius: 10px; background: var(--cream); border: 2px solid var(--ink); }
+.tiles div { display: flex; flex-direction: column; gap: 6px; padding: 11px 12px 10px; border-radius: 10px; background: var(--cream); border: 2px solid #151515; }
 .tiles dt { order: 2; font: 700 12px/1 var(--ui); opacity: .7; }
 .tiles dd { order: 1; margin: 0; font: 400 24px/1 var(--num); letter-spacing: .04em; }
 .keys { margin: 0; padding-top: 14px; border-top: 2px dashed rgba(21, 21, 21, .22); font: 700 13px/2.1 var(--ui); opacity: .8; }
-kbd { font: 400 14px/1 var(--num); letter-spacing: .04em; padding: 2px 7px; border-radius: 6px; background: #fff; border: 2px solid var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+kbd { font: 400 14px/1 var(--num); letter-spacing: .04em; padding: 2px 7px; border-radius: 6px; background: #fff; border: 2px solid #151515; box-shadow: 2px 2px 0 #151515; }
 
 .panel.winp { text-align: center; padding-top: 26px; }
 .badge { width: 104px; height: 104px; margin: 0 auto 10px; animation: pop .6s cubic-bezier(.3, 1.6, .5, 1) .12s both; }
+.badge .bf { fill: var(--burst-red); }
+.badge .crown { fill: var(--red); stroke: var(--ink); stroke-width: 4; stroke-linejoin: round; }
 @keyframes pop { from { scale: .2; opacity: 0; rotate: -40deg; } }
 .panel.winp h2 { font-size: 28px; }
 .winlead { margin: 6px 0 18px; font: 700 14px/1.5 var(--ui); opacity: .75; }
@@ -290,17 +364,19 @@ kbd { font: 400 14px/1 var(--num); letter-spacing: .04em; padding: 2px 7px; bord
 .winp .actions { justify-content: center; }
 
 @media (max-width: 560px) {
-  h1 { font-size: 19px; -webkit-text-stroke-width: 3px; text-shadow: 2px 2px 0 var(--ink); }
+  h1 { font-size: 19px; -webkit-text-stroke-width: 3px; text-shadow: 2px 2px 0 var(--title-shadow); }
   .logo { width: 34px; height: 34px; }
   .brand { gap: 8px; }
   .deal { font-size: 11px; }
   .stats { gap: 5px; }
-  .stats div { flex-direction: column; align-items: center; gap: 3px; padding: 5px 8px; border-width: 2px; box-shadow: 2px 2px 0 var(--ink); }
+  .stats div { flex-direction: column; align-items: center; gap: 3px; padding: 5px 8px; border-width: 2px; box-shadow: 2px 2px 0 var(--shadow); }
   .stats dt { font-size: 10px; }
   .stats dd { font-size: 17px; }
-  .tools button { gap: 4px; padding: 7px 1px 6px; font-size: 11px; border-width: 2px; border-radius: 10px; box-shadow: 2px 2px 0 var(--ink); }
+  .tools button { gap: 4px; padding: 7px 1px 6px; font-size: 11px; border-width: 2px; border-radius: 10px; box-shadow: 2px 2px 0 var(--shadow); }
   .tools svg { width: 19px; height: 19px; }
   .chip { font-size: 15px; padding: 10px 18px 11px; }
+  .moon { left: auto; right: 38%; width: 34px; height: 34px; }
+  .swatches.four .sw { font-size: 12px; }
 }
 @media (max-width: 390px) {
   .deal { display: none; }
@@ -313,6 +389,14 @@ kbd { font: 400 14px/1 var(--num); letter-spacing: .04em; padding: 2px 7px; bord
 </style>
 </head>
 <body>
+<div class="sky" aria-hidden="true">
+  <svg class="moon" viewBox="0 0 100 100"><path d="M62 8a42 42 0 1 0 30 62A34 34 0 1 1 62 8Z"/></svg>
+  <svg class="spark" viewBox="0 0 100 100" style="left:7%;top:10%"><path d="M50 4Q55 45 96 50Q55 55 50 96Q45 55 4 50Q45 45 50 4Z"/></svg>
+  <svg class="spark" viewBox="0 0 100 100" style="left:31%;top:4%"><path d="M50 4Q55 45 96 50Q55 55 50 96Q45 55 4 50Q45 45 50 4Z"/></svg>
+  <svg class="spark" viewBox="0 0 100 100" style="left:64%;top:6%"><path d="M50 4Q55 45 96 50Q55 55 50 96Q45 55 4 50Q45 45 50 4Z"/></svg>
+  <svg class="spark" viewBox="0 0 100 100" style="right:4%;top:34%"><path d="M50 4Q55 45 96 50Q55 55 50 96Q45 55 4 50Q45 45 50 4Z"/></svg>
+  <svg class="spark" viewBox="0 0 100 100" style="left:3%;top:52%"><path d="M50 4Q55 45 96 50Q55 55 50 96Q45 55 4 50Q45 45 50 4Z"/></svg>
+</div>
 <div class="app">
   <header class="bar">
     <div class="brand">
@@ -366,6 +450,9 @@ kbd { font: 400 14px/1 var(--num); letter-spacing: .04em; padding: 2px 7px; bord
     <div class="field">
       <span class="lab">背景</span>
       <div class="swatches">
+        <button type="button" class="sw sw-felt" data-felt="manga"><i></i>黑白</button>
+        <button type="button" class="sw sw-felt" data-felt="night"><i></i>深夜</button>
+        <button type="button" class="sw sw-felt" data-felt="retro"><i></i>復古</button>
         <button type="button" class="sw sw-felt" data-felt="yellow"><i></i>檸檬黃</button>
         <button type="button" class="sw sw-felt" data-felt="sky"><i></i>汽水藍</button>
         <button type="button" class="sw sw-felt" data-felt="pink"><i></i>草莓粉</button>
@@ -373,7 +460,8 @@ kbd { font: 400 14px/1 var(--num); letter-spacing: .04em; padding: 2px 7px; bord
     </div>
     <div class="field">
       <span class="lab">牌背</span>
-      <div class="swatches">
+      <div class="swatches four">
+        <button type="button" class="sw sw-back" data-back="auto"><i></i>預設</button>
         <button type="button" class="sw sw-back" data-back="pink"><i></i>桃紅</button>
         <button type="button" class="sw sw-back" data-back="cyan"><i></i>天藍</button>
         <button type="button" class="sw sw-back" data-back="red"><i></i>番茄紅</button>
@@ -443,7 +531,6 @@ kbd { font: 400 14px/1 var(--num); letter-spacing: .04em; padding: 2px 7px; bord
   })();
   const BURST_P = new Path2D(BURST);
   const STAR_D = 'M50 8 61 38 93 38 67 57 77 88 50 69 23 88 33 57 7 38 39 38Z';
-  const INK = '#151515', RED = '#ff3d3d', YELLOW = '#ffd43b', CYAN = '#26b6ff', PINK = '#ff4fa8';
   const suitOf = id => (id / 13) | 0;
   const rankOf = id => id % 13 + 1;
   const isRed = id => suitOf(id) === 1 || suitOf(id) === 2;
@@ -454,11 +541,13 @@ kbd { font: 400 14px/1 var(--num); letter-spacing: .04em; padding: 2px 7px; bord
     get(k, d) { try { const v = localStorage.getItem(KEY + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
     set(k, v) { try { localStorage.setItem(KEY + k, JSON.stringify(v)); } catch { /* storage unavailable */ } },
   };
-  const FELTS = ['yellow', 'sky', 'pink'], BACKS = ['pink', 'cyan', 'red'];
-  const prefs = Object.assign({ draw: 1, felt: 'yellow', back: 'pink', sound: true }, store.get('prefs', {}));
-  delete prefs.style;  // left over from the old looks
-  if (!FELTS.includes(prefs.felt)) prefs.felt = 'yellow';
-  if (!BACKS.includes(prefs.back)) prefs.back = 'pink';
+  const FELTS = ['manga', 'night', 'retro', 'yellow', 'sky', 'pink'], BACKS = ['auto', 'pink', 'cyan', 'red'];
+  const saved = store.get('prefs', {});
+  // v2 made 黑白 the default page: earlier saves keep their draw and sound choices but start on it
+  if (!(saved.v >= 2)) { delete saved.felt; delete saved.back; delete saved.style; }
+  const prefs = Object.assign({ draw: 1, felt: 'manga', back: 'auto', sound: true }, saved, { v: 2 });
+  if (!FELTS.includes(prefs.felt)) prefs.felt = 'manga';
+  if (!BACKS.includes(prefs.back)) prefs.back = 'auto';
   const stats = Object.assign({ played: 0, won: 0, bestTime: 0, bestScore: 0, streak: 0, bestStreak: 0 }, store.get('stats', {}));
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -591,28 +680,29 @@ kbd { font: 400 14px/1 var(--num); letter-spacing: .04em; padding: 2px 7px; bord
   const cardEls = [], slotEls = {};
 
   const svgBox = (inner, cls = '') => `<svg${cls ? ` class="${cls}"` : ''} viewBox="0 0 100 100" aria-hidden="true">${inner}</svg>`;
-  const burstPath = (fill, w = 3.5) => `<path d="${BURST}" fill="${fill}" stroke="${INK}" stroke-width="${w}" stroke-linejoin="round"/>`;
-  const inked = (s, w) => `<use href="#suit-${s}" fill="currentColor" stroke="${INK}" stroke-width="${w}" paint-order="stroke" stroke-linejoin="round"/>`;
+  // fills and ink come from the theme via the .bf / .inked classes
+  const BURST_SVG = `<path class="bf" d="${BURST}"/>`;
+  const inked = s => `<use class="inked" href="#suit-${s}"/>`;
   function suitArt(s) {
     const [x, y] = SHINE[s];
-    return inked(s, 7) + `<ellipse cx="${x}" cy="${y}" rx="8" ry="5" fill="#fff" transform="rotate(-35 ${x} ${y})"/>`;
+    return inked(s) + `<ellipse cx="${x}" cy="${y}" rx="8" ry="5" fill="#fff" transform="rotate(-35 ${x} ${y})"/>`;
   }
-  const BACK_HTML = svgBox(`<path d="${STAR_D}" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>`, 'star');
+  const BACK_HTML = svgBox(`<path d="${STAR_D}"/>`, 'star');
   function cardHTML(id) {
     const s = SUITS[suitOf(id)], r = rankOf(id), name = RANKS[r - 1], red = isRed(id);
     let body;
-    if (r === 1) body = `<div class="big">${svgBox(burstPath(CYAN))}<div class="on">${svgBox(suitArt(s))}</div></div>`;
-    else if (r > 10) body = `<div class="big pow">${svgBox(burstPath(red ? YELLOW : CYAN))}<b>${name}</b></div><span class="cap">${COURT_NAME[name]}</span>`;
+    if (r === 1) body = `<div class="big ace">${svgBox(BURST_SVG)}<div class="on">${svgBox(suitArt(s))}</div></div>`;
+    else if (r > 10) body = `<div class="big pow">${svgBox(BURST_SVG)}<b>${name}</b></div><span class="cap">${COURT_NAME[name]}</span>`;
     else body = `<div class="big">${svgBox(suitArt(s))}</div>`;
     return `<div class="flip"><div class="face front ${red ? 'red' : 'black'}">`
-      + `<div class="idx"><span class="rk">${name}</span>${svgBox(inked(s, 9), 'is')}</div>${body}</div>`
+      + `<div class="idx"><span class="rk">${name}</span>${svgBox(inked(s), 'is')}</div>${body}</div>`
       + `<div class="face back">${BACK_HTML}</div></div>`;
   }
   function buildTable() {
     document.body.insertAdjacentHTML('afterbegin',
       `<svg width="0" height="0" style="position:absolute" aria-hidden="true">${SUITS.map(s => `<symbol id="suit-${s}" viewBox="0 0 100 100"><path d="${SUIT_D[s]}"/></symbol>`).join('')}</svg>`);
-    $('logo').innerHTML = burstPath(RED, 4) + `<text x="50" y="64" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="38" font-weight="900" fill="#fff" stroke="${INK}" stroke-width="7" paint-order="stroke">接</text>`;
-    $('winBadge').innerHTML = burstPath(YELLOW) + `<path d="M27 66 23 36 39 49 50 29 61 49 77 36 73 66Z" fill="${RED}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>`;
+    $('logo').innerHTML = BURST_SVG + '<text x="50" y="64" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="38" font-weight="900">接</text>';
+    $('winBadge').innerHTML = BURST_SVG + '<path class="crown" d="M27 66 23 36 39 49 50 29 61 49 77 36 73 66Z"/>';
     const slot = (key, cls, html = '') => {
       const d = document.createElement('div');
       d.className = 'slot ' + cls; d.innerHTML = html;
@@ -721,12 +811,12 @@ kbd { font: 400 14px/1 var(--num); letter-spacing: .04em; padding: 2px 7px; bord
     return el;
   }
   // A comic sound-effect word in a starburst.
-  function boom(text, x, y, cls = '', fill = YELLOW) {
+  function boom(text, x, y, cls = '') {
     if (reduceMotion) return;
     const el = fxEl('boom ' + cls, x, y);
     el.style.setProperty('--rot', (Math.random() * 18 - 13).toFixed(1) + 'deg');
     el.style.setProperty('--w', Math.max(2.8, text.length * .95 + 1.3).toFixed(2) + 'em');  // stretch the burst to fit the word
-    el.innerHTML = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${burstPath(fill, 3).replace('<path', '<path vector-effect="non-scaling-stroke"')}</svg><span>${text}</span>`;
+    el.innerHTML = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="bf" vector-effect="non-scaling-stroke" d="${BURST}"/></svg><span>${text}</span>`;
   }
   const pick = list => list[Math.floor(Math.random() * list.length)];
 
@@ -824,9 +914,9 @@ kbd { font: 400 14px/1 var(--num); letter-spacing: .04em; padding: 2px 7px; bord
     const p = P[lead], { cw, ch } = Lay;
     if (to.type === 'found' && (!auto || suitDone)) {
       const word = suitDone ? pick(['讚啦！', '收齊！']) : combo > 1 ? `連擊×${combo}！` : pick(['啪！', '啪！', '咚！', '好耶！']);
-      setTimeout(() => boom(word, p.x + cw / 2, p.y + ch * .5, suitDone ? 'big' : '', combo > 1 && !suitDone ? PINK : YELLOW), 170);
+      setTimeout(() => boom(word, p.x + cw / 2, p.y + ch * .5, suitDone ? 'big' : combo > 1 ? 'hot' : ''), 170);
     } else if (revealed && combo > 1) {
-      setTimeout(() => boom(`連擊×${combo}！`, p.x + cw / 2, p.y + ch * .4, '', PINK), 170);
+      setTimeout(() => boom(`連擊×${combo}！`, p.x + cw / 2, p.y + ch * .4, 'hot'), 170);
     }
     if (pts > 0) setTimeout(() => fxEl('float', p.x + cw / 2, p.y - ch * .05, '+' + pts), 140);
     if (G.found.every(pile => pile.length === 13)) win(); else save();
@@ -1140,7 +1230,7 @@ kbd { font: 400 14px/1 var(--num); letter-spacing: .04em; padding: 2px 7px; bord
     save();
     hud();
     setTimeout(() => Sound.play('win'), 250);
-    setTimeout(() => boom('贏啦！', Lay.W / 2, Lay.H * .42, 'huge', PINK), 300);
+    setTimeout(() => boom('贏啦！', Lay.W / 2, Lay.H * .42, 'huge'), 300);
     setTimeout(cascade, 450);
     setTimeout(showWin, reduceMotion ? 400 : 1900);
   }
@@ -1163,10 +1253,17 @@ kbd { font: 400 14px/1 var(--num); letter-spacing: .04em; padding: 2px 7px; bord
     ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r);
     ctx.closePath();
   }
+  // The current theme's colours, read from the CSS tokens on <html> when the finale starts.
+  let T = {};
+  function readTheme() {
+    const css = getComputedStyle(document.documentElement), v = n => css.getPropertyValue('--' + n).trim();
+    T = { ink: v('ink'), shadow: v('shadow'), paper: v('paper'), red: v('red'), black: v('black'),
+      burstRed: v('burst-red'), burstBlack: v('burst-black'), burstAce: v('burst-ace') };
+  }
   // Paint a 100×100 path at (x, y, size): ink outline under the fill, like the SVG's paint-order.
   function inkedPath(ctx, path, x, y, size, fill, width) {
     ctx.save(); ctx.translate(x, y); ctx.scale(size / 100, size / 100);
-    ctx.lineJoin = 'round'; ctx.lineWidth = width; ctx.strokeStyle = INK; ctx.stroke(path);
+    ctx.lineJoin = 'round'; ctx.lineWidth = width; ctx.strokeStyle = T.ink; ctx.stroke(path);
     ctx.fillStyle = fill; ctx.fill(path);
     ctx.restore();
   }
@@ -1178,30 +1275,30 @@ kbd { font: 400 14px/1 var(--num); letter-spacing: .04em; padding: 2px 7px; bord
   }
   function cardImage(id, dpr) {
     const { cw, ch } = Lay, hard = Math.max(3, cw * .05), ol = Math.max(2, cw * .028), rr = cw * .07;
-    const r = rankOf(id), s = SUITS[suitOf(id)], name = RANKS[r - 1], red = isRed(id), col = red ? RED : INK;
+    const r = rankOf(id), s = SUITS[suitOf(id)], name = RANKS[r - 1], red = isRed(id), col = red ? T.red : T.black;
     const c = document.createElement('canvas');
     c.width = Math.ceil((cw + hard) * dpr); c.height = Math.ceil((ch + hard) * dpr);
     const x = c.getContext('2d');
     x.scale(dpr, dpr);
-    roundRect(x, hard, hard, cw, ch, rr); x.fillStyle = INK; x.fill();
-    roundRect(x, ol / 2, ol / 2, cw - ol, ch - ol, rr); x.fillStyle = '#fff'; x.fill();
-    x.lineWidth = ol; x.strokeStyle = INK; x.stroke();
+    roundRect(x, hard, hard, cw, ch, rr); x.fillStyle = T.shadow; x.fill();
+    roundRect(x, ol / 2, ol / 2, cw - ol, ch - ol, rr); x.fillStyle = T.paper; x.fill();
+    x.lineWidth = ol; x.strokeStyle = T.ink; x.stroke();
     const rs = Math.round(cw * (Lay.compact ? .44 : .36));
     x.font = `400 ${rs}px Bangers, "Arial Black", sans-serif`; x.textBaseline = 'top'; x.lineJoin = 'round';
-    x.lineWidth = Math.max(2, cw * .028); x.strokeStyle = INK; x.strokeText(name, cw * .08, cw * .07);
+    x.lineWidth = Math.max(2, cw * .028); x.strokeStyle = T.ink; x.strokeText(name, cw * .08, cw * .07);
     x.fillStyle = col; x.fillText(name, cw * .08, cw * .07);
     const is = cw * (Lay.compact ? .2 : .17);
     inkedPath(x, SUIT_P[s], cw * .1 + x.measureText(name).width, cw * .07 + (rs * .8 - is) / 2, is, col, 9);
     const cx = cw / 2, cy = ch * .61;
     if (r > 10) {
       const sz = cw * .8;
-      inkedPath(x, BURST_P, cx - sz / 2, ch * .57 - sz / 2, sz, red ? YELLOW : CYAN, 3.5);
+      inkedPath(x, BURST_P, cx - sz / 2, ch * .57 - sz / 2, sz, red ? T.burstRed : T.burstBlack, 3.5);
       x.font = `400 ${Math.round(cw * .42)}px Bangers, "Arial Black", sans-serif`; x.textAlign = 'center'; x.textBaseline = 'middle';
-      x.lineWidth = cw * .05; x.strokeStyle = INK; x.strokeText(name, cx, ch * .58);
+      x.lineWidth = cw * .05; x.strokeStyle = T.ink; x.strokeText(name, cx, ch * .58);
       x.fillStyle = '#fff'; x.fillText(name, cx, ch * .58);
     } else {
       let sz = cw * .6;
-      if (r === 1) { inkedPath(x, BURST_P, cx - sz / 2, cy - sz / 2, sz, CYAN, 3.5); sz *= .56; }
+      if (r === 1) { inkedPath(x, BURST_P, cx - sz / 2, cy - sz / 2, sz, T.burstAce, 3.5); sz *= .56; }
       inkedPath(x, SUIT_P[s], cx - sz / 2, cy - sz / 2, sz, col, 7);
       shine(x, s, cx - sz / 2, cy - sz / 2, sz);
     }
@@ -1209,6 +1306,7 @@ kbd { font: 400 14px/1 var(--num); letter-spacing: .04em; padding: 2px 7px; bord
   }
   function cascade() {
     if (reduceMotion || !G.won) return;
+    readTheme();
     const dpr = Math.min(2, window.devicePixelRatio || 1), W = Lay.W, H = Lay.H, { cw, ch } = Lay;
     fx.width = Math.round(W * dpr); fx.height = Math.round(H * dpr);
     fx.style.width = W + 'px'; fx.style.height = H + 'px';

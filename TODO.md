@@ -28,13 +28,19 @@ from the direction board (https://claude.ai/artifact/QkbRrtFhRXihB4MFnPeHMX). Th
 Cloudflare dashboard (Workers & Pages → Create application → Import a repository), or runs
 `npx wrangler login` so `npx wrangler deploy` can publish from here.
 
-**Then:** user said the comic look is too bright. Proposal page with three calmer comic variants
-(深夜 dark indigo + moon, 復古 1960s newsprint on dusty teal, 黑白 manga screentone + focus lines):
-https://claude.ai/artifact/61p1smyYViJiyX5PwxGXKR — waiting for a pick (could also ship all three
-as 背景 choices in settings).
+**Then (done, committed):** user said the comic look was too bright; from a page of three calmer
+variants (https://claude.ai/artifact/61p1smyYViJiyX5PwxGXKR) they asked for all three as 背景
+choices, with 黑白 as the default.
+- 背景 now: 黑白 (default: manga screentone, focus lines, red as the only colour, black card backs),
+  深夜 (dark indigo, moon + stars, cream cards), 復古 (dusty teal, newsprint cards, misregistered
+  colour), plus the original 檸檬黃 / 汽水藍 / 草莓粉.
+- Every colour is a CSS token on `<html>` re-pointed per `[data-felt]`; SVG art uses `.bf` / `.inked`
+  classes; the win cascade reads the tokens (`readTheme`). Settings sheets stay light.
+- 牌背 gained 預設 (`auto`, the theme's own back via `--theme-back`) as the default.
+- Prefs now carry `v: 2`; older saves keep draw/sound but reset to 黑白 + 預設.
+- Checked in the browser: migration from old prefs, all three new themes, settings, win cascade in 黑白.
 
 **Next (ideas):**
-- Build the chosen variant(s) into public/index.html.
 - Confirm the Worker is live and note its *.workers.dev URL here.
 - Get the user's reaction after playing; tune combo timing (6 s) and multiplier cap (×5) by feel.
 - Only deal solvable games (needs a solver, ideally in a Web Worker).
