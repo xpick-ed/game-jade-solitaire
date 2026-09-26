@@ -28,7 +28,13 @@ from the direction board (https://claude.ai/artifact/QkbRrtFhRXihB4MFnPeHMX). Th
 Cloudflare dashboard (Workers & Pages → Create application → Import a repository), or runs
 `npx wrangler login` so `npx wrangler deploy` can publish from here.
 
+**Then:** user said the comic look is too bright. Proposal page with three calmer comic variants
+(深夜 dark indigo + moon, 復古 1960s newsprint on dusty teal, 黑白 manga screentone + focus lines):
+https://claude.ai/artifact/61p1smyYViJiyX5PwxGXKR — waiting for a pick (could also ship all three
+as 背景 choices in settings).
+
 **Next (ideas):**
+- Build the chosen variant(s) into public/index.html.
 - Confirm the Worker is live and note its *.workers.dev URL here.
 - Get the user's reaction after playing; tune combo timing (6 s) and multiplier cap (×5) by feel.
 - Only deal solvable games (needs a solver, ideally in a Web Worker).
