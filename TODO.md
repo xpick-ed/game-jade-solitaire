@@ -22,7 +22,14 @@ from the direction board (https://claude.ai/artifact/QkbRrtFhRXihB4MFnPeHMX). Th
   undo, the pop sizes, settings, and the win cascade + dialog. No console errors.
 - Published as an Artifact (same URL as before): https://claude.ai/artifact/1AgUn3kLQ76rbdYHPRZLWK
 
+**Then:** set up for a Cloudflare Worker (static assets only, no script). The game moved to
+`public/index.html`; `wrangler.jsonc` names the Worker `jade-solitaire` and serves `./public`.
+`npx wrangler deploy --dry-run` passes. Not deployed yet: the user connects the repo in the
+Cloudflare dashboard (Workers & Pages → Create application → Import a repository), or runs
+`npx wrangler login` so `npx wrangler deploy` can publish from here.
+
 **Next (ideas):**
+- Confirm the Worker is live and note its *.workers.dev URL here.
 - Get the user's reaction after playing; tune combo timing (6 s) and multiplier cap (×5) by feel.
 - Only deal solvable games (needs a solver, ideally in a Web Worker).
 - Cycle through destinations when a tapped card has more than one legal spot.
@@ -34,9 +41,12 @@ from the direction board (https://claude.ai/artifact/QkbRrtFhRXihB4MFnPeHMX). Th
 ## Notes
 
 - Repo: https://github.com/xpick-ed/game-jade-solitaire (folder `games/game-jade-solitaire`, was `games/poker`).
-- Play locally: just open `index.html` in a browser (Google Fonts loads over the network).
+- Play locally: just open `public/index.html` in a browser (Google Fonts loads over the network).
+- Cloudflare Worker: `wrangler.jsonc` at the repo root; only `public/` is uploaded. Deploy with
+  `npx wrangler deploy` (after `npx wrangler login`), or automatically on push once the repo is
+  connected with Workers Builds (the dashboard Worker name must be `jade-solitaire`).
 - Republish the Artifact after edits: strip the document wrapper, then publish to the same URL:
-  `grep -v -x -E '<!doctype html>|<html lang="zh-Hant">|<head>|</head>|<body>|</body>|</html>|<meta charset="utf-8">|<meta name="viewport".*>' index.html > /tmp/jade-solitaire.html`
+  `grep -v -x -E '<!doctype html>|<html lang="zh-Hant">|<head>|</head>|<body>|</body>|</html>|<meta charset="utf-8">|<meta name="viewport".*>' public/index.html > /tmp/jade-solitaire.html`
   then publish that file with `url` = the Artifact link above.
 - The whole game lives in the one `<script>` block: state (`G`, `history`), layout (`measure`,
   `fan`, `computePositions`, `render`), moves (`doMove`, `drawStock`, `smartTarget`), combo
