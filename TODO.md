@@ -26,6 +26,7 @@
 
 ## Notes
 
+- Repo: https://github.com/xpick-ed/game-jade-solitaire (folder `games/game-jade-solitaire`, was `games/poker`).
 - Play locally: just open `index.html` in a browser (Google Fonts loads over the network).
 - Republish the Artifact after edits: strip the document wrapper, then publish to the same URL:
   `grep -v -x -E '<!doctype html>|<html lang="zh-Hant">|<head>|</head>|<body>|</body>|</html>|<meta charset="utf-8">|<meta name="viewport".*>' index.html > /tmp/jade-solitaire.html`
