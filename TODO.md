@@ -2,18 +2,21 @@
 
 ## Current
 
-**Doing (done, committed):** v1 of the game — a single file, `index.html`, no build step.
-- Klondike rules, draw 1 or draw 3, unlimited passes through the stock, Windows-style scoring
-  (+time bonus on a win).
-- Drag to move cards, or tap a card to send it to the best spot. Undo, hints (cycle through them),
-  auto-complete once everything is face up, and the bouncing-card cascade when you win.
-- Seeded deals: every deal has a number (#123456); "重玩這一局" replays it, and "今日挑戰"
-  gives everyone the same deal for the day.
-- 3 felt colours × 3 card backs, synthesised sound effects (WebAudio), stats and the
-  in-progress game saved in localStorage.
-- Published as an Artifact: https://claude.ai/artifact/1AgUn3kLQ76rbdYHPRZLWK
+**Doing (done, committed):** v2 — modern visual redesign after v1 felt "too old school".
+- Look: deep jade-teal gradient table with slow drifting light (no felt texture), white rounded
+  cards with Outfit numerals, big single suit instead of pips, J/Q/K as gradient panels,
+  gradient card backs with ripple lines + sheen, glass stat pill and dock, white bottom sheets.
+  Chinese UI font: Chiron GoRound TC.
+- Feel: cards tilt while dragged and land with a slight overshoot, foundation ring burst,
+  floating "+10" score text, chime when a suit is completed.
+- Themes are now 翡翠 / 深海 / 莓果 tables and 珊瑚 / 靛藍 / 石墨 backs
+  (old saved prefs fall back to the defaults).
+- Game logic unchanged from v1 (Klondike, draw 1/3, undo, hints, auto-complete, cascade,
+  seeded deals + 今日挑戰, stats in localStorage).
+- Published as an Artifact (same URL as v1): https://claude.ai/artifact/1AgUn3kLQ76rbdYHPRZLWK
 
 **Next (ideas):**
+- Get the user's reaction to the v2 look; tweak colours/fonts from there.
 - Only deal solvable games (needs a solver, ideally in a Web Worker).
 - Cycle through destinations when a tapped card has more than one legal spot.
 - Left-hand layout option (stock on the right).
